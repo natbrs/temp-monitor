@@ -25,7 +25,7 @@ sequelize
         console.error('Falha:', error);
     });
 
-const Weather = sequelize.define('weather', {
+const Weather = sequelize.define("weather", {
     wea_temp: {
         type: DataTypes.INTEGER,
         allowNull: false,
