@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div style="max-width: 600px;">
+        <h1>Temperatura e Umidade</h1>
+        <ul>
+            {{#each sensor}}
+                <li>Temperatura: {{this.dataValues.wea_temp}}, Umidade: {{this.dataValues.wea_humid}}</li>
+            {{/each}}
+        </ul>
+
+        <h1>Gráficos relacionado aos dados coletados:</h1>
+        <canvas id="temperatureChart" width="400" height="200"></canvas>
+        <canvas id="humidityChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        const temperatureData = [];
+        const humidityData = [];
+        const labels = [];
+
+        {{#each sensor}}
+            temperatureData.push({{this.dataValues.wea_temp}});
+            humidityData.push({{this.dataValues.wea_humid}});
+            labels.push('{{this.dataValues.id}}');
+        {{/each}}
+
+        const ctxTemperature = document.getElementById('temperatureChart').getContext('2d');
+        const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
+
+        new Chart(ctxTemperature, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Temperatura (°C)',
+                    data: temperatureData,
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                    },
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+
+        new Chart(ctxHumidity, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Umidade (%)',
+                    data: humidityData,
+                    borderColor: 'green',
+                    borderWidth: 2,
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                    },
+                    y: {
+                        beginAtZero: true,
+                    },
+                },
+            },
+        });
+    </script>
+</body>
+</html>
